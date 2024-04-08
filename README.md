@@ -2,11 +2,6 @@
 
 This project implements a solution to scrape all products and accumulate them into an array from an imaginary API with limited results per search. 
 
-## Features
-- Fetches products within a specified price range.
-- Handles pagination for fetching all products.
-- Includes a mock function for testing purposes.
-
 ## Installation
 
 1. Clone the repository:
