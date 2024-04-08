@@ -2,7 +2,7 @@
 
 This project implements a solution to scrape all products and accumulate them into an array from an imaginary API with limited results per search. 
 
-## Installation
+## Getting Started
 
 1. Clone the repository:
    ```bash
