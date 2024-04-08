@@ -32,7 +32,7 @@ After installing Node.js, navigate to your project directory in the terminal and
 5. This output will include the total number of products fetched and an array of all the products with their `IDs` and `prices`.
 
 ## Testing
-For testing purposes, you can modify the mock function parameters or mock the API response to simulate different scenarios.
+For testing purposes, you can modify the mock API parameters or mock the API response to simulate different scenarios. For now, the total number of products is fixed to ```99000``` to verify the output. You can choose any number. 
 
 ## Contributing
 Contributions are not currently accepted for this project.
