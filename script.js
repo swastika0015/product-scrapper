@@ -12,7 +12,7 @@ return await response.json();
 
 //function to fetch products recursively
 async function fetchAllProducts(minPrice, maxPrice, offset = 0, products = []) {
-const limit = 1000; // Maximum products per API call
+const limit = 1000; //as given in the problem statement
 const response = await fetchProductsFromAPI(minPrice, maxPrice, offset, limit);
 //adding fetched products to the products array
 products.push(...response.products);
@@ -25,8 +25,8 @@ return fetchAllProducts(minPrice, maxPrice, offset + limit, products);
 }
 
 //testing:
-const minPrice = 0; //minimum price
-const maxPrice = 1000000; //maximum price
+const minPrice = 0; //as given in the problem statement
+const maxPrice = 1000000; //as given in the problem statement
 fetchAllProducts(minPrice, maxPrice)
 .then(products => {
 console.log("Total products fetched: ", products.length, products);
