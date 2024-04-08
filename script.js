@@ -1,37 +1,36 @@
-const { mockFetchProducts } = require('./mockFetch.js');
+'use strict';
 
-// function to fetch products in batches until all products are retrieved
-async function fetchAllProducts(minPrice, maxPrice, batchSize) {
-    let products = [];
-    let totalFetched = 0;
-    let currentMin = minPrice;
-
-    while (totalFetched < Number.MAX_SAFE_INTEGER) {
-        let remainingProducts = Math.min(batchSize, Number.MAX_SAFE_INTEGER - totalFetched);
-        let response = await mockFetchProducts(currentMin, maxPrice, remainingProducts);
-
-        // accumulate fetched products
-        products.push(...response.products);
-
-        totalFetched += response.count;
-
-        // if all products are fetched, break the loop
-        if (totalFetched >= response.total) {
-            break;
-        }
-
-        // update currentMin for the next batch
-        currentMin = Math.max(...response.products.map(product => product.price)) + 1;
-    }
-
-    return products;
+//function to fetch products from the API
+async function fetchProductsFromAPI(minPrice, maxPrice, offset, limit) {
+const url = `http://localhost:3000/products?minPrice=${minPrice}&maxPrice=${maxPrice}&offset=${offset}&limit=${limit}`;
+const response = await fetch(url);
+if (!response.ok) {
+throw new Error(`Failed to fetch products from API: ${response.status} ${response.statusText}`);
+}
+return await response.json();
 }
 
-// fetch all products
-fetchAllProducts(0, 100000, 1000) // 0-100000 is the price range and API returns at max 1000 products per call.
-    .then(products => {
-        console.log("Total products fetched: ", products.length, products);
-    })
-    .catch(error => {
-        console.error("Failed fetching products: ", error);
-    });
+//function to fetch products recursively
+async function fetchAllProducts(minPrice, maxPrice, offset = 0, products = []) {
+const limit = 1000; // Maximum products per API call
+const response = await fetchProductsFromAPI(minPrice, maxPrice, offset, limit);
+//adding fetched products to the products array
+products.push(...response.products);
+//return the products array when all products are fetched
+if (products.length >= response.total) {
+return products;
+}
+//make a recursive call with updated offset when there are more products to fetch
+return fetchAllProducts(minPrice, maxPrice, offset + limit, products);
+}
+
+//testing:
+const minPrice = 0; //minimum price
+const maxPrice = 1000000; //maximum price
+fetchAllProducts(minPrice, maxPrice)
+.then(products => {
+console.log("Total products fetched: ", products.length, products);
+})
+.catch(error => {
+console.error("Error fetching products: ", error);
+});
